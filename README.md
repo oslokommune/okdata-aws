@@ -1,4 +1,4 @@
-# okdata-awslambda
+# okdata-aws
 
 Collection of helpers for working with AWS Lambda.
 
@@ -24,8 +24,8 @@ You can set the service name using the `logging.init` method, or configure it
 using the `SERVICE_NAME` environment variable.
 
 ```python
-from okdata.awslambda import logging
-from okdata.awslambda.logging import logging_wrapper
+from okdata.aws import logging
+from okdata.aws.logging import logging_wrapper
 
 logging.init("my_fantastic_lambda")
 
@@ -45,7 +45,7 @@ duration and much more, but to add even more magic you can use `log_add` and
 `log_duration`.
 
 ```python
-from okdata.awslambda.logging import logging_wrapper, log_add, log_duration
+from okdata.aws.logging import logging_wrapper, log_add, log_duration
 
 @logging_wrapper
 def handler(event, context):
@@ -72,7 +72,7 @@ If you need to process an exception you can use `log_exception` to log it to the
 `exc_info` key.
 
 ```python
-from okdata.awslambda.logging import logging_wrapper, log_exception
+from okdata.aws.logging import logging_wrapper, log_exception
 
 @logging_wrapper
 def handler(event, context):

@@ -2,12 +2,8 @@ import json
 import os
 from time import sleep
 
-from okdata.awslambda.logging import (
-    hide_suffix,
-    log_duration,
-    log_dynamodb,
-    logging_wrapper,
-)
+from okdata.aws.logging import hide_suffix, log_duration, log_dynamodb, logging_wrapper
+
 
 empty_event = {}
 empty_context = None

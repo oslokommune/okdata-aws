@@ -11,7 +11,7 @@ boto3==1.16.11            # via dataplatform-common-python
 botocore==1.19.11         # via aws-xray-sdk, boto3, s3transfer
 certifi==2020.6.20        # via requests
 chardet==3.0.4            # via requests
-dataplatform-common-python==0.4.1  # via okdata-awslambda (setup.py)
+dataplatform-common-python==0.4.1  # via okdata-aws (setup.py)
 ecdsa==0.14.1             # via python-jose
 future==0.18.2            # via aws-xray-sdk
 idna==2.10                # via requests
@@ -28,7 +28,7 @@ rsa==4.6                  # via python-jose
 s3transfer==0.3.3         # via boto3
 simplejson==3.17.2        # via dataplatform-common-python
 six==1.15.0               # via ecdsa, python-dateutil, python-jose, structlog
-structlog==20.1.0         # via dataplatform-common-python, okdata-awslambda (setup.py)
+structlog==20.1.0         # via dataplatform-common-python, okdata-aws (setup.py)
 urllib3==1.25.11          # via botocore, requests
 wrapt==1.12.1             # via aws-xray-sdk
 zipp==3.4.0               # via importlib-metadata
