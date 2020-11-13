@@ -41,15 +41,6 @@ def status_add(**kwargs):
         _status_logger.add(**kwargs)
 
 
-# TODO: Remove. Currently in use by s3-writer until updated.
-def status_end_continue(status_body):
-    status_add(
-        trace_event_status=TraceEventStatus.OK,
-        trace_status=TraceStatus.CONTINUE,
-        status_body=status_body,
-    )
-
-
 def status_from_lambda_context(event, context):
     request_context = event.get("requestContext") or {}
     authorizer = request_context.get("authorizer") or {}
