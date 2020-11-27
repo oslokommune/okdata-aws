@@ -82,3 +82,51 @@ def handler(event, context):
         log_exception(e)
         return { ... }
 ```
+
+
+## Status wrapper
+
+The status wrapper logs details about a Lambda function execution and sends it
+to the status-api.
+
+The first component that touches the data (typically on upload) sets a "trace
+ID", which is then inherited by the following processing steps. This allows the
+status-api to track what has happened to the data, from upload through the
+various processing steps until the data is ready for consumption.
+
+For pipeline components, the status wrapper picks up the trace ID from the
+Lambda event automatically.
+
+The status wrapper expects the SERVICE_NAME of the Lambda component to be set
+in environment variable, along with GIT_REV and GIT_BRANCH.
+
+### Usage
+
+Tag the Lambda handler function with `@status_wrapper`.
+
+The handler function should set the `domain` and `domain_id` values using the
+`status_add` method:
+
+```python
+from okdata.aws.status import status_wrapper, status_add
+
+@status_wrapper
+def my_lambda_handler(event, context):
+    status_add(domain="dataset", domain_id=f"{dataset_id}/{version}")
+
+    # Regular handler logic here ...
+
+    # The handler can also add a body object containing component-specific information
+    status_body = {
+        "input": "/tmp/file.txt",
+        "output": "/tmp/file.csv",
+        "transformation": "text-to-csv",
+    }
+    status_add(status_body=status_body)
+```
+
+By default, this will send a status event with event status `OK` and trace
+status `CONTINUE`, meaning that the data pipeline is still running. If the
+handler function fails, e.g. throws an exception, it will send event status
+`FAILED` and trace status `FINISHED`, in addition to the failure details
+(exception).
