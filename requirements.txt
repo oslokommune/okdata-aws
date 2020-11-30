@@ -4,5 +4,28 @@
 #
 #    pip-compile
 #
-six==1.15.0               # via structlog
+attrs==20.3.0             # via jsonschema
+certifi==2020.11.8        # via requests
+chardet==3.0.4            # via requests
+ecdsa==0.14.1             # via python-jose
+idna==2.10                # via requests
+importlib-metadata==3.1.0  # via jsonschema
+jsonschema==3.2.0         # via okdata-sdk
+okdata-sdk==0.5.1         # via okdata-aws (setup.py)
+prettytable==2.0.0        # via okdata-sdk
+pyasn1==0.4.8             # via python-jose, rsa
+pydantic==1.7.2           # via okdata-aws (setup.py)
+pyjwt==1.7.1              # via okdata-sdk
+pyrsistent==0.17.3        # via jsonschema
+python-jose==3.2.0        # via python-keycloak
+python-keycloak==0.23.0   # via okdata-sdk
+requests==2.25.0          # via okdata-sdk, python-keycloak
+rsa==4.6                  # via python-jose
+six==1.15.0               # via ecdsa, jsonschema, python-jose, structlog
 structlog==20.1.0         # via okdata-aws (setup.py)
+urllib3==1.26.2           # via okdata-sdk, requests
+wcwidth==0.2.5            # via prettytable
+zipp==3.4.0               # via importlib-metadata
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools
