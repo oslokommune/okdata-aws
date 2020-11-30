@@ -1,7 +1,7 @@
-## ?.?.?
+## 0.2.0
 
 * Added `status_wrapper` and `status_add` from common-python under
-  `okdata.aws.status`
+  `okdata.aws.status`.
 
 ## 0.1.0
 
