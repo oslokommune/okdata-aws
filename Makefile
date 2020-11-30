@@ -44,6 +44,12 @@ upgrade-deps: $(BUILD_VENV)/bin/pip-compile
 build: $(BUILD_VENV)/bin/wheel $(BUILD_VENV)/bin/twine
 	$(BUILD_PY) setup.py sdist bdist_wheel
 
+.PHONY: publish
+publish:
+	username=$$(gopass show dataplatform/websites/pypi.org/origo-dataplatform username) &&\
+	password=$$(gopass show --password dataplatform/websites/pypi.org/origo-dataplatform) &&\
+	python -m twine upload -u $$username -p $$password dist/*
+
 ###
 # Python build dependencies
 ##
