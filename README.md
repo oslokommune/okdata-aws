@@ -87,18 +87,18 @@ def handler(event, context):
 ## Status wrapper
 
 The status wrapper logs details about a Lambda function execution and sends it
-to the status-api.
+to the status API.
 
 The first component that touches the data (typically on upload) sets a "trace
 ID", which is then inherited by the following processing steps. This allows the
-status-api to track what has happened to the data, from upload through the
+status API to track what has happened to the data, from upload through the
 various processing steps until the data is ready for consumption.
 
 For pipeline components, the status wrapper picks up the trace ID from the
 Lambda event automatically.
 
-The status wrapper expects the SERVICE_NAME of the Lambda component to be set
-in environment variable, along with GIT_REV and GIT_BRANCH.
+The status wrapper expects the `SERVICE_NAME` of the Lambda component to be set
+in an environment variable, along with `GIT_REV` and `GIT_BRANCH`.
 
 ### Usage
 
