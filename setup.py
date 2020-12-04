@@ -15,6 +15,7 @@ setuptools.setup(
     packages=setuptools.find_namespace_packages(
         include="origo.aws.*", exclude=["tests*"]
     ),
+    namespace_packages=["okdata"],
     classifiers=[
         "Development Status :: 3 - Alpha",
         "License :: OSI Approved :: MIT License",
