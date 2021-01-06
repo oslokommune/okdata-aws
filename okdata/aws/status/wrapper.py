@@ -2,6 +2,8 @@ import os
 import time
 from functools import wraps
 
+from requests.exceptions import HTTPError
+
 from .sdk import Status
 from .model import StatusData, TraceStatus, TraceEventStatus
 
@@ -29,7 +31,10 @@ def status_wrapper(handler):
             end_time = time.perf_counter_ns()
             duration_ms = (end_time - start_time) / 1000000.0
             _status_logger.add(duration=duration_ms)
-            _status_logger.done()
+            try:
+                _status_logger.done()
+            except HTTPError:
+                pass
             _status_logger = None
 
     return wrapper
