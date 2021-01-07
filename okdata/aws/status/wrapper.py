@@ -2,8 +2,11 @@ import os
 import time
 from functools import wraps
 
-from .sdk import Status
+from requests.exceptions import HTTPError
+
 from .model import StatusData, TraceStatus, TraceEventStatus
+from .sdk import Status
+from okdata.aws.logging import log_exception
 
 _status_logger = None
 
@@ -29,7 +32,11 @@ def status_wrapper(handler):
             end_time = time.perf_counter_ns()
             duration_ms = (end_time - start_time) / 1000000.0
             _status_logger.add(duration=duration_ms)
-            _status_logger.done()
+            try:
+                _status_logger.done()
+            except HTTPError as e:
+                log_exception(e)
+                pass
             _status_logger = None
 
     return wrapper
