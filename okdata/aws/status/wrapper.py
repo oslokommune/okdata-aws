@@ -4,8 +4,9 @@ from functools import wraps
 
 from requests.exceptions import HTTPError
 
-from .sdk import Status
 from .model import StatusData, TraceStatus, TraceEventStatus
+from .sdk import Status
+from okdata.aws.logging import log_exception
 
 _status_logger = None
 
@@ -33,7 +34,8 @@ def status_wrapper(handler):
             _status_logger.add(duration=duration_ms)
             try:
                 _status_logger.done()
-            except HTTPError:
+            except HTTPError as e:
+                log_exception(e)
                 pass
             _status_logger = None
 
