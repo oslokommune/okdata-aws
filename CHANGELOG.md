@@ -1,4 +1,4 @@
-## ?.?.?
+## 0.3.0
 
 * The `okdata` namespace package now uses the old-style `pkg_resources`
   declaration instead of being an implicit namespace package.
