@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field, validator
 
@@ -48,6 +48,7 @@ class StatusData(BaseModel):
     s3_path: Optional[str] = None
     duration: Optional[int] = None
     exception: Optional[str] = None
+    errors: Optional[List[Dict]] = None
 
     class Config:
         validate_assignment = True
