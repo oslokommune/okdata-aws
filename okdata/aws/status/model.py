@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Dict, Optional
+from typing import Dict, Optional, List
 from datetime import datetime, timezone
 from pydantic import BaseModel, Field, validator
 
@@ -48,6 +48,7 @@ class StatusData(BaseModel):
     s3_path: Optional[str] = None
     duration: Optional[int] = None
     exception: Optional[str] = None
+    errors: Optional[List] = None
 
     class Config:
         validate_assignment = True
@@ -56,3 +57,15 @@ class StatusData(BaseModel):
     def ensure_exception_data_is_string(cls, v):
         if isinstance(v, Exception):
             return str(v)
+
+    @validator("errors", each_item=True)
+    def ensure_format_of_errors(cls, v):
+
+        if not isinstance(v, dict):
+            raise TypeError(f"{v} is not a dict.")
+        if "message" not in v:
+            raise ValueError("Missing key 'message'.")
+        if not isinstance(v["message"], dict):
+            raise TypeError("error['message'] is not a dict.")
+        if "nb" not in v["message"]:
+            raise ValueError("Missing key 'nb' in error['message'].")

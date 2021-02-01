@@ -1,3 +1,7 @@
+## ?.?.?
+
+* The field `errors` has been added to `StatusData`.
+
 ## 0.3.0
 
 * The `okdata` namespace package now uses the old-style `pkg_resources`
