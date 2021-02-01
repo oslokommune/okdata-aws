@@ -66,6 +66,6 @@ class StatusData(BaseModel):
         if "message" not in v:
             raise ValueError("Missing key 'message'.")
         if not isinstance(v["message"], dict):
-            raise TypeError("error['message`] is not a dict.")
+            raise TypeError("error['message'] is not a dict.")
         if "nb" not in v["message"]:
-            raise ValueError("Missing key `nb` in error['message`].")
+            raise ValueError("Missing key 'n' in error['message'].")
