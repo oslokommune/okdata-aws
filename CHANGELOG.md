@@ -1,4 +1,4 @@
-## ?.?.?
+## 0.3.1
 
 * The field `errors` has been added to `StatusData`.
 
