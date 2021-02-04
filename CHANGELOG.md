@@ -1,4 +1,4 @@
-## ?.?.?
+## 0.3.2
 
 * Fix bug in validator `ensure_format_of_error`.
 
