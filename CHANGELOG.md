@@ -1,3 +1,7 @@
+## ?.?.?
+
+* Fix bug in validator `ensure_format_of_error`.
+
 ## 0.3.1
 
 * The field `errors` has been added to `StatusData`.
