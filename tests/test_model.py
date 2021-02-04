@@ -12,6 +12,7 @@ class TestStatusData:
         params = {"errors": [OK_ERROR, OK_ERROR]}
         result = StatusData(**params)
         assert isinstance(result, StatusData)
+        assert result.errors[0] == OK_ERROR
 
     def test_errors_entry_not_dict(self):
 

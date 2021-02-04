@@ -69,3 +69,4 @@ class StatusData(BaseModel):
             raise TypeError("error['message'] is not a dict.")
         if "nb" not in v["message"]:
             raise ValueError("Missing key 'nb' in error['message'].")
+        return v
