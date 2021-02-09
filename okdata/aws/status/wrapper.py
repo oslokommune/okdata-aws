@@ -35,7 +35,7 @@ def status_wrapper(handler):
             try:
                 _status_logger.done()
             except HTTPError as e:
-                logging.exception(f"Error response from status API: {e}")
+                logging.warn(f"Got {e.response.status_code} error from status API: {e.response.text}")
                 pass
             _status_logger = None
 
