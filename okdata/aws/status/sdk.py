@@ -35,7 +35,9 @@ class Status:
             return {}
 
         payload = json.loads(self.status_data.json(exclude_none=True))
-        response = self._sdk.update_status(self.status_data.trace_id, payload)
+        response = self._sdk.update_status(
+            self.status_data.trace_id, payload, retries=3
+        )
 
         log.info(f"Status API got payload: {payload}")
         log.info(f"Got back from status api: {response}")
