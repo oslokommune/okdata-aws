@@ -23,7 +23,7 @@ requests==2.25.0          # via okdata-sdk, python-keycloak
 rsa==4.6                  # via python-jose
 six==1.15.0               # via ecdsa, jsonschema, python-jose, structlog
 structlog==20.1.0         # via okdata-aws (setup.py)
-urllib3==1.26.3           # via okdata-sdk, requests
+urllib3==1.26.4           # via okdata-sdk, requests
 wcwidth==0.2.5            # via prettytable
 zipp==3.4.0               # via importlib-metadata
 
