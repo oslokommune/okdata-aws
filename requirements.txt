@@ -20,7 +20,7 @@ pyrsistent==0.17.3        # via jsonschema
 python-jose==3.2.0        # via python-keycloak
 python-keycloak==0.23.0   # via okdata-sdk
 requests==2.25.0          # via okdata-sdk, python-keycloak
-rsa==4.6                  # via python-jose
+rsa==4.7                  # via python-jose
 six==1.15.0               # via ecdsa, jsonschema, python-jose, structlog
 structlog==20.1.0         # via okdata-aws (setup.py)
 urllib3==1.26.4           # via okdata-sdk, requests
