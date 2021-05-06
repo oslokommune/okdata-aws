@@ -1,4 +1,4 @@
-## ?.?.?
+## 0.3.3
 
 * The minimum required version of `okdata-sdk` has been raised to 0.8.1 to
   support Keycloak v12.
