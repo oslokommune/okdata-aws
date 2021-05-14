@@ -37,7 +37,7 @@ def timed_operation(raise_exception=False):
 
 
 def timing_handler(event, context):
-    result = log_duration(lambda: timed_operation(), "my_timer")
+    result = log_duration(timed_operation, "my_timer")
     return {"statusCode": result}
 
 
