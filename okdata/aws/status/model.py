@@ -57,6 +57,7 @@ class StatusData(BaseModel):
     def ensure_exception_data_is_string(cls, v):
         if isinstance(v, Exception):
             return str(v)
+        return v
 
     @validator("errors", each_item=True)
     def ensure_format_of_errors(cls, v):
