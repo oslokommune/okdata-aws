@@ -1,3 +1,13 @@
+## ?.?.?
+
+* An asynchronous variant of the logging wrapper is now available:
+
+  ```python
+  @logging_wrapper("my-service", async_wrapper=True)
+  async def handler(event, context):
+      return await foo()
+  ```
+
 ## 0.3.3
 
 * The minimum required version of `okdata-sdk` has been raised to 0.8.1 to

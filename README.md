@@ -17,7 +17,7 @@ Structured and enriched logging for AWS Lambda functions.
 
 ### Usage
 
-Wrap your lambda handler with `logging_wrapper`. Badabing badabom, you're good
+Wrap your Lambda handler with `logging_wrapper`. Badabing badabom, you're good
 to go!
 
 You can set the service name using the `logging.init` method, or configure it
@@ -36,6 +36,14 @@ def handler(event, context):
             "statusCode": 500,
             "body": "Automatically logs bodies from error responses even!",
         }
+```
+
+For asynchronous handlers, set `async_wrapper` to `True`:
+
+```python
+@logging_wrapper("my-service", async_wrapper=True)
+async def handler(event, context):
+    return await foo()
 ```
 
 #### Encriching logs
