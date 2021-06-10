@@ -23,6 +23,7 @@ ASYNC = False
 
 
 def _init_logger(handler, event, context):
+    global COLD_START
     global SERVICE_NAME
     global _logger
 
@@ -71,15 +72,14 @@ def _init_logger(handler, event, context):
         ),
         cold_start=COLD_START,
     )
+    COLD_START = False
 
 
 def _finalize(start_time):
-    global COLD_START
     global _logger
     duration_ms = (time.perf_counter_ns() - start_time) / 1000000.0
     _logger.msg("", duration_ms=duration_ms)
     _logger = None
-    COLD_START = False
 
 
 def _handle_response(response):
@@ -131,7 +131,6 @@ def logging_wrapper(*args, **kwargs):
 
     @wraps(handler)
     def wrapper(event, context):
-        global COLD_START
         global _logger
         _init_logger(handler, event, context)
         start_time = time.perf_counter_ns()
@@ -145,7 +144,6 @@ def logging_wrapper(*args, **kwargs):
 
     @wraps(handler)
     async def async_wrapper(event, context):
-        global COLD_START
         global _logger
         _init_logger(handler, event, context)
         start_time = time.perf_counter_ns()
