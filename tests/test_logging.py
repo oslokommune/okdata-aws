@@ -2,6 +2,8 @@ import json
 import os
 from time import sleep
 
+import pytest
+
 from okdata.aws.logging import hide_suffix, log_duration, log_dynamodb, logging_wrapper
 
 empty_event = {}
@@ -9,6 +11,10 @@ empty_context = None
 
 
 def empty_handler(event, context):
+    return {}
+
+
+async def empty_handler_async(event, context):
     return {}
 
 
@@ -311,3 +317,14 @@ def test_log_dynamodb_item_count(capsys):
     log = json.loads(capsys.readouterr().out)
 
     assert log["dynamodb_item_count"] == 123
+
+
+@pytest.mark.asyncio
+async def test_async_wrapper(capsys):
+    wrapper = logging_wrapper(empty_handler_async, async_wrapper=True)
+
+    await wrapper(empty_event, empty_context)
+
+    log = json.loads(capsys.readouterr().out)
+
+    assert log["handler_method"] == "empty_handler_async"
