@@ -47,7 +47,7 @@ def _init_logger(handler, event, context):
         # Strip final octet of IP address for privacy
         source_ip = ".".join(source_ip.split(".")[0:-1]) + ".x"
 
-    _logger = logger.bind(
+    __logger = logger.bind(
         service_name=SERVICE_NAME,
         handler_method=handler.__name__,
         function_name=getattr(context, "function_name", ""),
@@ -72,31 +72,9 @@ def _init_logger(handler, event, context):
         ),
         cold_start=COLD_START,
     )
+    _logger = __logger
     COLD_START = False
-
-
-def _finalize(start_time):
-    global _logger
-    duration_ms = (time.perf_counter_ns() - start_time) / 1000000.0
-    _logger.msg("", duration_ms=duration_ms)
-    _logger = None
-
-
-def _handle_response(response):
-    global _logger
-
-    if isinstance(response, dict) and "statusCode" in response:
-        status_code = response["statusCode"]
-        _logger = _logger.bind(
-            response_status_code=status_code,
-            level="info" if status_code < 500 else "error",
-        )
-        if status_code >= 400:
-            _logger = _logger.bind(response_body=response.get("body", ""))
-    else:
-        _logger = _logger.bind(level="info")
-
-    return response
+    return __logger
 
 
 def logging_wrapper(*args, **kwargs):
@@ -135,25 +113,51 @@ def logging_wrapper(*args, **kwargs):
         _init_logger(handler, event, context)
         start_time = time.perf_counter_ns()
         try:
-            return _handle_response(handler(event, context))
+            response = handler(event, context)
+            if isinstance(response, dict) and "statusCode" in response:
+                status_code = response["statusCode"]
+                _logger = _logger.bind(
+                    response_status_code=status_code,
+                    level="info" if status_code < 500 else "error",
+                )
+                if status_code >= 400:
+                    _logger = _logger.bind(response_body=response.get("body", ""))
+            else:
+                _logger = _logger.bind(level="info")
+
+            return response
         except Exception as e:
             _logger = _logger.bind(exc_info=e, level="error")
             raise e
         finally:
-            _finalize(start_time)
+            duration_ms = (time.perf_counter_ns() - start_time) / 1000000.0
+            _logger.msg("", duration_ms=duration_ms)
+            _logger = None
 
     @wraps(handler)
     async def async_wrapper(event, context):
-        global _logger
-        _init_logger(handler, event, context)
+        logger = _init_logger(handler, event, context)
         start_time = time.perf_counter_ns()
         try:
-            return _handle_response(await handler(event, context))
+            response = await handler(event, context)
+            if isinstance(response, dict) and "statusCode" in response:
+                status_code = response["statusCode"]
+                logger = logger.bind(
+                    response_status_code=status_code,
+                    level="info" if status_code < 500 else "error",
+                )
+                if status_code >= 400:
+                    logger = logger.bind(response_body=response.get("body", ""))
+            else:
+                logger = logger.bind(level="info")
+
+            return response
         except Exception as e:
-            _logger = _logger.bind(exc_info=e, level="error")
+            logger = logger.bind(exc_info=e, level="error")
             raise e
         finally:
-            _finalize(start_time)
+            duration_ms = (time.perf_counter_ns() - start_time) / 1000000.0
+            logger.msg("", duration_ms=duration_ms)
 
     return async_wrapper if ASYNC else wrapper
 

@@ -1,3 +1,7 @@
+## ?.?.?
+
+* Fixed a bug in the asynchronous variant of the logging wrapper.
+
 ## 0.4.1
 
 * HTTP errors from the status API is no longer propagated to users of
