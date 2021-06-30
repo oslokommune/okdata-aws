@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 from time import sleep
@@ -15,6 +16,7 @@ def empty_handler(event, context):
 
 
 async def empty_handler_async(event, context):
+    await asyncio.sleep(0.1)
     return {}
 
 
@@ -323,8 +325,15 @@ def test_log_dynamodb_item_count(capsys):
 async def test_async_wrapper(capsys):
     wrapper = logging_wrapper(empty_handler_async, async_wrapper=True)
 
-    await wrapper(empty_event, empty_context)
+    await asyncio.gather(
+        wrapper(empty_event, empty_context),
+        wrapper(empty_event, empty_context),
+        wrapper(empty_event, empty_context),
+    )
 
-    log = json.loads(capsys.readouterr().out)
+    log_entries = [e for e in capsys.readouterr().out.split("\n") if e]
 
-    assert log["handler_method"] == "empty_handler_async"
+    assert len(log_entries) == 3
+
+    for log_entry in log_entries:
+        assert json.loads(log_entry)["handler_method"] == "empty_handler_async"
