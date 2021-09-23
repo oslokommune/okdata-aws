@@ -1,3 +1,8 @@
+## ?.?.?
+
+* HTTP errors from the status API is no longer propagated to users of
+  `@status_wrapper`; the errors are logged instead.
+
 ## 0.4.0
 
 * An asynchronous variant of the logging wrapper is now available:
