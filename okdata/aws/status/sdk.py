@@ -1,9 +1,11 @@
-import os
-import logging
 import json
-from typing import Union, Dict
+import logging
+import os
 from datetime import datetime, timezone
+from typing import Dict, Union
+
 from okdata.sdk.status import Status as StatusSDK
+from requests.exceptions import HTTPError, RetryError
 
 from .model import StatusData
 
@@ -35,12 +37,15 @@ class Status:
             return {}
 
         payload = json.loads(self.status_data.json(exclude_none=True))
-        response = self._sdk.update_status(self.status_data.trace_id, payload)
 
-        log.info(f"Status API got payload: {payload}")
-        log.info(f"Got back from status api: {response}")
-
-        return response
+        try:
+            log.info(f"Sending payload to status API: {payload}")
+            response = self._sdk.update_status(self.status_data.trace_id, payload)
+            log.info(f"Response from status API: {response}")
+            return response
+        except (HTTPError, RetryError) as e:
+            log.error(f"Status API error: {e}")
+            return None
 
     def add(self, **kwargs):
         for key, value in kwargs.items():
