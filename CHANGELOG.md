@@ -1,4 +1,4 @@
-## ?.?.?
+## 0.4.1
 
 * HTTP errors from the status API is no longer propagated to users of
   `@status_wrapper`; the errors are logged instead.
