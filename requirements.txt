@@ -16,10 +16,8 @@ idna==2.10
     # via requests
 jsonschema==3.2.0
     # via okdata-sdk
-okdata-sdk==0.8.1
+okdata-sdk==0.9.1
     # via okdata-aws (setup.py)
-prettytable==2.0.0
-    # via okdata-sdk
 pyasn1==0.4.8
     # via
     #   python-jose
@@ -50,11 +48,7 @@ six==1.15.0
 structlog==20.1.0
     # via okdata-aws (setup.py)
 urllib3==1.26.5
-    # via
-    #   okdata-sdk
-    #   requests
-wcwidth==0.2.5
-    # via prettytable
+    # via requests
 
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

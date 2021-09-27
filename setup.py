@@ -23,7 +23,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
     ],
     install_requires=[
-        "okdata-sdk>=0.8.1",
+        "okdata-sdk>=0.9.1",
         "pydantic",
         "requests",
         "structlog",
