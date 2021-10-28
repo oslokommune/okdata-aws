@@ -4,6 +4,7 @@ from copy import copy
 from functools import wraps
 
 import structlog
+from starlette.middleware.base import BaseHTTPMiddleware
 
 structlog.configure(
     processors=[
@@ -16,10 +17,48 @@ structlog.configure(
 
 logger = structlog.get_logger()
 _logger = None
+_start_time = None
 
 COLD_START = True
 SERVICE_NAME = None
-ASYNC = False
+
+
+def _logging_middleware(request, call_next):
+    async def async_handler(event, context):
+        global _start_time
+
+        _init_logger(async_handler, event, context)
+        _start_time = time.perf_counter_ns()
+
+        return _handle_response(await call_next(request))
+
+    return async_handler(
+        request.scope.get("aws.event", {}), request.scope.get("aws.context")
+    )
+
+
+def add_fastapi_logging(app):
+    app.add_middleware(BaseHTTPMiddleware, dispatch=_logging_middleware)
+
+    @app.on_event("startup")
+    async def startup_event():
+        global SERVICE_NAME
+        SERVICE_NAME = os.getenv("SERVICE_NAME")
+
+    @app.exception_handler(Exception)
+    async def exception_handler(request, e):
+        global _logger
+        _logger = _logger.bind(exc_info=e, level="error")
+        raise e
+
+    @app.on_event("shutdown")
+    async def shutdown_event():
+        """
+        Take advantage of the fact that shutdown is called after each
+        Lambda function invocation to finalize the logging after any
+        exceptions are logged.
+        """
+        _finalize(_start_time)
 
 
 def _init_logger(handler, event, context):
@@ -101,10 +140,6 @@ def _handle_response(response):
 
 def logging_wrapper(*args, **kwargs):
     global SERVICE_NAME
-    global ASYNC
-
-    if kwargs.get("async_wrapper"):
-        ASYNC = True
 
     # Support @logging_wrapper(service_name="...")
     if "service_name" in kwargs:
@@ -142,20 +177,7 @@ def logging_wrapper(*args, **kwargs):
         finally:
             _finalize(start_time)
 
-    @wraps(handler)
-    async def async_wrapper(event, context):
-        global _logger
-        _init_logger(handler, event, context)
-        start_time = time.perf_counter_ns()
-        try:
-            return _handle_response(await handler(event, context))
-        except Exception as e:
-            _logger = _logger.bind(exc_info=e, level="error")
-            raise e
-        finally:
-            _finalize(start_time)
-
-    return async_wrapper if ASYNC else wrapper
+    return wrapper
 
 
 def log_dynamodb(f):

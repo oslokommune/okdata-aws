@@ -17,6 +17,8 @@ Structured and enriched logging for AWS Lambda functions.
 
 ### Usage
 
+#### Regular Lambda functions
+
 Wrap your Lambda handler with `logging_wrapper`. Badabing badabom, you're good
 to go!
 
@@ -38,12 +40,16 @@ def handler(event, context):
         }
 ```
 
-For asynchronous handlers, set `async_wrapper` to `True`:
+#### FastAPI applications
+
+Call the `add_fastapi_logging` with the FastAPI application as a parameter
+to add the logging middleware.
 
 ```python
-@logging_wrapper("my-service", async_wrapper=True)
-async def handler(event, context):
-    return await foo()
+from okdata.aws.logging import add_fastapi_logging
+
+app = FastAPI()
+add_fastapi_logging(app)
 ```
 
 #### Encriching logs
