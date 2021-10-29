@@ -1,4 +1,4 @@
-## ?.?.?
+## 1.0.0
 
 * Replace the asynchronous logging wrapper with a method to register
   FastAPI logging middleware.
