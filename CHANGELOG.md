@@ -1,3 +1,15 @@
+## ?.?.?
+
+* Replace the asynchronous logging wrapper with a method to register
+  FastAPI logging middleware.
+
+  ```python
+  from okdata.aws.logging import add_fastapi_logging
+
+  app = FastAPI()
+  add_fastapi_logging(app)
+  ```
+
 ## 0.4.1
 
 * HTTP errors from the status API is no longer propagated to users of
