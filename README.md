@@ -42,7 +42,7 @@ def handler(event, context):
 
 #### FastAPI applications
 
-Call the `add_fastapi_logging` with the FastAPI application as a parameter
+Call `add_fastapi_logging` with the FastAPI application as a parameter
 to add the logging middleware.
 
 ```python
