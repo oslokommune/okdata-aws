@@ -5,6 +5,7 @@ from functools import wraps
 
 import structlog
 from starlette.middleware.base import BaseHTTPMiddleware
+from starlette.responses import JSONResponse
 
 structlog.configure(
     processors=[
@@ -49,7 +50,7 @@ def add_fastapi_logging(app):
     async def exception_handler(request, e):
         global _logger
         _logger = _logger.bind(exc_info=e, level="error")
-        raise e
+        return JSONResponse(status_code=500, content={"message": "Oops! Something went wrong!"})
 
     @app.on_event("shutdown")
     async def shutdown_event():
