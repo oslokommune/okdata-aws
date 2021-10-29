@@ -5,7 +5,7 @@ from functools import wraps
 
 import structlog
 from starlette.middleware.base import BaseHTTPMiddleware
-from starlette.responses import JSONResponse
+from starlette.responses import JSONResponse, Response as StarletteResponse
 
 structlog.configure(
     processors=[
@@ -50,7 +50,9 @@ def add_fastapi_logging(app):
     async def exception_handler(request, e):
         global _logger
         _logger = _logger.bind(exc_info=e, level="error")
-        return JSONResponse(status_code=500, content={"message": "Oops! Something went wrong!"})
+        return JSONResponse(
+            status_code=500, content={"detail": "Oops! Something went wrong!"}
+        )
 
     @app.on_event("shutdown")
     async def shutdown_event():
@@ -125,14 +127,24 @@ def _finalize(start_time):
 def _handle_response(response):
     global _logger
 
+    status_code = None
+    body = None
     if isinstance(response, dict) and "statusCode" in response:
+        # Regular Lambda function
         status_code = response["statusCode"]
+        body = response.get("body", "")
+    elif isinstance(response, StarletteResponse):
+        # FastAPI application
+        status_code = response.status_code
+        # TODO Get body from different response types?
+
+    if status_code:
         _logger = _logger.bind(
             response_status_code=status_code,
             level="info" if status_code < 500 else "error",
         )
-        if status_code >= 400:
-            _logger = _logger.bind(response_body=response.get("body", ""))
+        if status_code >= 400 and body:
+            _logger = _logger.bind(response_body=body)
     else:
         _logger = _logger.bind(level="info")
 
