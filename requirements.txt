@@ -8,7 +8,7 @@ anyio==3.3.4
     # via starlette
 attrs==21.2.0
     # via jsonschema
-certifi==2021.10.8
+certifi==2022.12.7
     # via requests
 charset-normalizer==2.0.7
     # via requests
