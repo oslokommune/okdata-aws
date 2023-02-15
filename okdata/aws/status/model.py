@@ -61,7 +61,6 @@ class StatusData(BaseModel):
 
     @validator("errors", each_item=True)
     def ensure_format_of_errors(cls, v):
-
         if not isinstance(v, dict):
             raise TypeError(f"{v} is not a dict.")
         if "message" not in v:
