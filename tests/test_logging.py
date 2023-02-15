@@ -277,7 +277,6 @@ def test_log_non_rest_response(capsys):
 
 
 def test_hide_suffix():
-
     username = "jon-blund"
 
     assert hide_suffix(username) == "jon-blxxx"
