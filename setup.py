@@ -26,7 +26,7 @@ setuptools.setup(
         "okdata-sdk>=0.9.1",
         "pydantic",
         "requests",
-        "starlette",
+        "starlette>=0.25.0,<1.0.0",
         "structlog",
     ],
 )
