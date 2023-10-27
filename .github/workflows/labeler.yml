@@ -4,7 +4,14 @@ on:
 jobs:
   triage:
     runs-on: ubuntu-latest
+
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+      pull-requests: write
+
     steps:
-    - uses: actions/labeler@main
+    - uses: actions/labeler@ac9175f8a1f3625fd0d4fb234536d26811351594 # v4.3.0
       with:
         repo-token: "${{ secrets.GITHUB_TOKEN }}"
