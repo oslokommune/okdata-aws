@@ -1,3 +1,9 @@
+## ?.?.?
+
+* Added support for Python 3.10, 3.11, and 3.12.
+* Dropped support for Python 3.7 which is being phased out by AWS. Python 3.8+
+  is now required.
+
 ## 1.0.1
 
 * Updated dependencies.
