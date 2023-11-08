@@ -3,6 +3,8 @@
 * Added support for Python 3.10, 3.11, and 3.12.
 * Dropped support for Python 3.7 which is being phased out by AWS. Python 3.8+
   is now required.
+* Fixed a bug in the logging module when the event from AWS contains
+  `{"headers": null}`.
 
 ## 1.0.1
 
