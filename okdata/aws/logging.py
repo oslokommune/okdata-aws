@@ -69,7 +69,7 @@ def _init_logger(handler, event, context):
     global SERVICE_NAME
     global _logger
 
-    headers = event.get("headers", {})
+    headers = event.get("headers", {}) or {}
     headers = {k.lower(): v for k, v in headers.items()}
 
     request_context = event.get("requestContext", {})

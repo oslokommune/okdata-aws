@@ -84,6 +84,12 @@ def test_log_empty_event_and_context(capsys):
     assert log["function_name"] == ""
 
 
+def test_log_none_headers(capsys):
+    decorator = logging_wrapper(service_name="my_service")
+    wrapper = decorator(empty_handler)
+    wrapper({"headers": None}, empty_context)
+
+
 def test_legacy_wrapper(capsys):
     decorator = logging_wrapper("my_old_service")
     wrapper = decorator(empty_handler)
