@@ -1,4 +1,4 @@
-## ?.?.?
+## 2.0.0
 
 * Added support for Python 3.10, 3.11, and 3.12.
 * Dropped support for Python 3.7 which is being phased out by AWS. Python 3.8+
