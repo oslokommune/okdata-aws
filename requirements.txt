@@ -20,7 +20,7 @@ idna==3.3
     #   requests
 jsonschema==4.1.2
     # via okdata-sdk
-okdata-sdk==0.9.1
+okdata-sdk==3.1.0
     # via okdata-aws (setup.py)
 pyasn1==0.4.8
     # via
@@ -33,7 +33,9 @@ pyjwt==2.4.0
 pyrsistent==0.18.0
     # via jsonschema
 python-jose==3.3.0
-    # via python-keycloak
+    # via
+    #   okdata-sdk
+    #   python-keycloak
 python-keycloak==0.26.1
     # via okdata-sdk
 requests==2.31.0
@@ -54,4 +56,6 @@ structlog==21.2.0
 typing-extensions==3.10.0.2
     # via pydantic
 urllib3==1.26.18
-    # via requests
+    # via
+    #   okdata-sdk
+    #   requests

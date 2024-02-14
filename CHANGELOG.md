@@ -1,3 +1,7 @@
+## ?.?.?
+
+* Updated dependencies.
+
 ## 2.0.0
 
 * Added support for Python 3.10, 3.11, and 3.12.
