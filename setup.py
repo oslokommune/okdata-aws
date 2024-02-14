@@ -28,6 +28,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
     ],
     install_requires=[
+        "boto3",
         "okdata-sdk>=3,<4",
         "pydantic<2",
         "requests",
