@@ -29,7 +29,7 @@ setuptools.setup(
     ],
     install_requires=[
         "okdata-sdk>=3,<4",
-        "pydantic",
+        "pydantic<2",
         "requests",
         "starlette>=0.25.0,<1.0.0",
         "structlog",
