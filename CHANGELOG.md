@@ -1,5 +1,7 @@
 ## ?.?.?
 
+* New utility function `okdata.aws.ssm.get_secret` for retrieving secure strings
+  from AWS SSM.
 * Updated dependencies.
 
 ## 2.0.0
