@@ -28,7 +28,7 @@ setuptools.setup(
         "Programming Language :: Python :: 3.12",
     ],
     install_requires=[
-        "okdata-sdk>=0.9.1",
+        "okdata-sdk>=3,<4",
         "pydantic",
         "requests",
         "starlette>=0.25.0,<1.0.0",
