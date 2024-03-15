@@ -1,3 +1,9 @@
+## ?.?.?
+
+* `okdata.aws.status.sdk.Status` now accepts an additional optional
+  parameter, `sdk_config`, which allows the underlying Status SDK to
+  be configured.
+
 ## 2.1.0 - 2024-02-15
 
 * New utility function `okdata.aws.ssm.get_secret` for retrieving secure strings
