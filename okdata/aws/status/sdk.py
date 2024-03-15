@@ -1,6 +1,5 @@
 import json
 import logging
-import os
 from datetime import datetime, timezone
 from typing import Dict, Union
 
@@ -10,10 +9,6 @@ from requests.exceptions import HTTPError, RetryError
 from .model import StatusData
 
 log = logging.getLogger()
-# TODO: Remove this when all users have been updated to set STATUS_API_URL
-# instead.
-api_gateway_url = os.environ.get("API_GATEWAY_URL", None)
-status_api_url = os.environ.get("STATUS_API_URL", None)
 
 
 class Status:
