@@ -1,7 +1,8 @@
-from enum import Enum
-from typing import Dict, Optional, List
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
-from pydantic import BaseModel, Field, validator
+from enum import Enum
+from json import dumps, JSONEncoder
+from typing import Dict, Optional, List
 
 
 class TraceStatus(str, Enum):
@@ -15,6 +16,35 @@ class TraceEventStatus(str, Enum):
     FAILED = "FAILED"
 
 
+class StatusJSONEncoder(JSONEncoder):
+    def default(self, obj, *args, **kwargs):
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
+
+class BaseModel:
+    def dict(self, exclude_none=False):
+        if exclude_none:
+            return asdict(
+                self,
+                dict_factory=lambda d: {k: v for (k, v) in d if v is not None},
+            )
+        return asdict(self)
+
+    def json(self, exclude_none=False, **kwargs):
+        return dumps(
+            self.dict(exclude_none=exclude_none),
+            cls=StatusJSONEncoder,
+            **kwargs,
+        )
+
+    @classmethod
+    def parse_obj(cls, obj):
+        return cls(**obj)
+
+
+@dataclass
 class StatusMeta(BaseModel):
     function_name: Optional[str] = None
     function_version: Optional[str] = None
@@ -27,17 +57,14 @@ class StatusMeta(BaseModel):
 # TODO: Rework optional vs required and defaults when currents users are updated
 # and if to be used as a basis for the status api. Both trace_id (for new traces)
 # and trace_event_id are currently generated in status-api.
+@dataclass
 class StatusData(BaseModel):
     trace_id: Optional[str] = None  # TODO: Generate here as default?
     # trace_event_id: UUID = None  # = Field(default_factory=uuid4)
     domain: str = "N/A"  # TODO: Temporary default (required)
     domain_id: Optional[str] = None
-    start_time: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc), str=datetime.isoformat
-    )
-    end_time: datetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc), str=datetime.isoformat
-    )
+    start_time: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    end_time: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     trace_status: TraceStatus = TraceStatus.CONTINUE
     trace_event_status: TraceEventStatus = TraceEventStatus.OK
     user: Optional[str] = None
@@ -50,23 +77,21 @@ class StatusData(BaseModel):
     exception: Optional[str] = None
     errors: Optional[List] = None
 
-    class Config:
-        validate_assignment = True
+    def __post_init__(self):
+        # Ensure that `meta` is of type `StatusMeta` if provided as a dictionary.
+        if isinstance(self.meta, dict):
+            self.meta = StatusMeta(**self.meta)
 
-    @validator("exception", pre=True)
-    def ensure_exception_data_is_string(cls, v):
-        if isinstance(v, Exception):
-            return str(v)
-        return v
+        # Ensure that exception data is a string
+        self.exception = str(self.exception) if self.exception else None
 
-    @validator("errors", each_item=True)
-    def ensure_format_of_errors(cls, v):
-        if not isinstance(v, dict):
-            raise TypeError(f"{v} is not a dict.")
-        if "message" not in v:
-            raise ValueError("Missing key 'message'.")
-        if not isinstance(v["message"], dict):
-            raise TypeError("error['message'] is not a dict.")
-        if "nb" not in v["message"]:
-            raise ValueError("Missing key 'nb' in error['message'].")
-        return v
+        # Validate and ensure format of errors
+        for error in self.errors or []:
+            if not isinstance(error, dict):
+                raise TypeError(f"{error} is not a dict.")
+            if "message" not in error:
+                raise ValueError("Missing key 'message'.")
+            if not isinstance(error["message"], dict):
+                raise TypeError("error['message'] is not a dict.")
+            if "nb" not in error["message"]:
+                raise ValueError("Missing key 'nb' in error['message'].")

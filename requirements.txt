@@ -36,8 +36,6 @@ pyasn1==0.4.8
     # via
     #   python-jose
     #   rsa
-pydantic==1.8.2
-    # via okdata-aws (setup.py)
 pyjwt==2.4.0
     # via okdata-sdk
 pyrsistent==0.18.0
@@ -69,8 +67,6 @@ starlette==0.36.2
     # via okdata-aws (setup.py)
 structlog==21.2.0
     # via okdata-aws (setup.py)
-typing-extensions==3.10.0.2
-    # via pydantic
 urllib3==1.26.18
     # via
     #   botocore

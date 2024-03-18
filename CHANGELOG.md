@@ -1,3 +1,9 @@
+## 3.0.0 - 2024-03-18
+
+* Refactored status data helpers to adopt standard dataclasses in place of
+  Pydantic, preventing Pydantic from being included as a transitive dependency
+  for projects utilizing these helpers.
+
 ## 2.2.0 - 2024-03-18
 
 * `okdata.aws.status.sdk.Status` now accepts an additional optional

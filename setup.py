@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="okdata-aws",
-    version="2.2.0",
+    version="3.0.0",
     author="Oslo Origo",
     author_email="dataplattform@oslo.kommune.no",
     description="Collection of helpers for working with AWS",
@@ -30,7 +30,6 @@ setuptools.setup(
     install_requires=[
         "boto3",
         "okdata-sdk>=3,<4",
-        "pydantic<2",
         "requests",
         "starlette>=0.25.0,<1.0.0",
         "structlog",
