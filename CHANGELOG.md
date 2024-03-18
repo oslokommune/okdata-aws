@@ -1,4 +1,4 @@
-## ?.?.?
+## 2.2.0 - 2024-03-18
 
 * `okdata.aws.status.sdk.Status` now accepts an additional optional
   parameter, `sdk_config`, which allows the underlying Status SDK to
