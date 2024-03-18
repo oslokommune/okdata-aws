@@ -1,4 +1,4 @@
-## ?.?.? - 2024-03-18
+## 3.0.0 - 2024-03-18
 
 * Refactored status data helpers to adopt standard dataclasses in place of
   Pydantic, preventing Pydantic from being included as a transitive dependency
