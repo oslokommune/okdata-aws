@@ -1,10 +1,13 @@
 import re
-import pytest
 from copy import deepcopy
-from freezegun import freeze_time
+from unittest.mock import patch
 
-from okdata.aws.status.sdk import Status
+import pytest
+from freezegun import freeze_time
+from okdata.sdk.config import Config
+
 from okdata.aws.status.model import StatusData, TraceStatus, TraceEventStatus
+from okdata.aws.status.sdk import Status
 from okdata.aws.status.wrapper import _status_from_lambda_context
 
 
@@ -65,6 +68,14 @@ class TestStatusClass:
         status_data = StatusData.parse_obj(mock_status_data)
         s = Status(status_data)
         assert s.status_data.trace_id == trace_id
+
+    def test_status_with_sdk_config(self):
+        config = Config(config={"foo": "bar"})
+        # Mock out the `Authenticate` class so that the SDK doesn't try to set
+        # up authentication with a malformed config.
+        with patch("okdata.sdk.sdk.Authenticate"):
+            s = Status(trace_id, config)
+        assert s._sdk.config.config == {"foo": "bar"}
 
     def test_status_data_from_lambda(self):
         lambda_context = MockLambdaContext()

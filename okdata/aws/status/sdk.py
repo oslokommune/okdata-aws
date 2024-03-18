@@ -3,6 +3,7 @@ import logging
 from datetime import datetime, timezone
 from typing import Dict, Union
 
+from okdata.sdk.config import Config
 from okdata.sdk.status import Status as StatusSDK
 from requests.exceptions import HTTPError, RetryError
 
@@ -12,7 +13,11 @@ log = logging.getLogger()
 
 
 class Status:
-    def __init__(self, status_data: Union[StatusData, Dict, str]):
+    def __init__(
+        self,
+        status_data: Union[StatusData, Dict, str],
+        sdk_config: Config = None,
+    ):
         if isinstance(status_data, str):
             # TODO: Remove in future - for backwards-compatibility:
             # Status-class used directly in state-machine-event only(?),
@@ -22,7 +27,7 @@ class Status:
             status_data = StatusData.parse_obj(status_data)
 
         self.status_data = status_data
-        self._sdk = StatusSDK()
+        self._sdk = StatusSDK(sdk_config)
 
     def _process_payload(self):
         if self.status_data.trace_id is None:
