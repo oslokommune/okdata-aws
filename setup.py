@@ -30,7 +30,6 @@ setuptools.setup(
     install_requires=[
         "boto3",
         "okdata-sdk>=3,<4",
-        "pydantic<2",
         "requests",
         "starlette>=0.25.0,<1.0.0",
         "structlog",

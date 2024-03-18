@@ -1,5 +1,4 @@
 import pytest
-from pydantic.error_wrappers import ValidationError
 
 from okdata.aws.status.model import StatusData
 
@@ -15,7 +14,7 @@ class TestStatusData:
 
     def test_errors_entry_not_dict(self):
         params = {"errors": [OK_ERROR, "This is string, not a dict."]}
-        with pytest.raises(ValidationError):
+        with pytest.raises(TypeError):
             StatusData(**params)
 
     def test_errors_entry_no_message(self):
