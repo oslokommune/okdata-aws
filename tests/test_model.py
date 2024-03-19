@@ -6,6 +6,11 @@ OK_ERROR = {"message": {"nb": "Det er et problem", "en": "There is a problem"}}
 
 
 class TestStatusData:
+    def test_invalid_errors(self):
+        params = {"errors": "foo"}
+        with pytest.raises(TypeError):
+            StatusData(**params)
+
     def test_errors_entry_valid(self):
         params = {"errors": [OK_ERROR, OK_ERROR]}
         result = StatusData(**params)

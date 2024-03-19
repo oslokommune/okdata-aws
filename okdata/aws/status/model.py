@@ -18,6 +18,8 @@ class TraceEventStatus(str, Enum):
 
 class StatusJSONEncoder(JSONEncoder):
     def default(self, obj, *args, **kwargs):
+        if isinstance(obj, Exception):
+            return str(obj)
         if isinstance(obj, datetime):
             return obj.isoformat()
         return super().default(obj)
@@ -77,21 +79,20 @@ class StatusData(BaseModel):
     exception: Optional[str] = None
     errors: Optional[List] = None
 
-    def __post_init__(self):
-        # Ensure that `meta` is of type `StatusMeta` if provided as a dictionary.
-        if isinstance(self.meta, dict):
-            self.meta = StatusMeta(**self.meta)
-
-        # Ensure that exception data is a string
-        self.exception = str(self.exception) if self.exception else None
-
+    def __setattr__(self, name, value):
         # Validate and ensure format of errors
-        for error in self.errors or []:
-            if not isinstance(error, dict):
-                raise TypeError(f"{error} is not a dict.")
-            if "message" not in error:
-                raise ValueError("Missing key 'message'.")
-            if not isinstance(error["message"], dict):
-                raise TypeError("error['message'] is not a dict.")
-            if "nb" not in error["message"]:
-                raise ValueError("Missing key 'nb' in error['message'].")
+        if name == "errors" and value is not None:
+            if not isinstance(value, list):
+                raise TypeError("`errors` must be provided as a list.")
+
+            for error in value:
+                if not isinstance(error, dict):
+                    raise TypeError(f"{error} is not a dict.")
+                if "message" not in error:
+                    raise ValueError("Missing key 'message'.")
+                if not isinstance(error["message"], dict):
+                    raise TypeError("error['message'] is not a dict.")
+                if "nb" not in error["message"]:
+                    raise ValueError("Missing key 'nb' in error['message'].")
+
+        super().__setattr__(name, value)

@@ -1,3 +1,4 @@
+import json
 import re
 from copy import deepcopy
 from unittest.mock import patch
@@ -6,7 +7,12 @@ import pytest
 from freezegun import freeze_time
 from okdata.sdk.config import Config
 
-from okdata.aws.status.model import StatusData, TraceStatus, TraceEventStatus
+from okdata.aws.status.model import (
+    StatusData,
+    StatusMeta,
+    TraceStatus,
+    TraceEventStatus,
+)
 from okdata.aws.status.sdk import Status
 from okdata.aws.status.wrapper import _status_from_lambda_context
 
@@ -129,3 +135,25 @@ class TestStatusClass:
         s = Status(mock_status_data)
         s.add(domain_id="my-domain-id")
         assert s.status_data.domain_id == "my-domain-id"
+
+    @freeze_time(utc_now)
+    def test_status_data_as_json(self, mock_openid, mock_status_api):
+        s = Status(mock_status_data)
+        s.add(
+            domain_id="my-domain-id",
+            exception=Exception("This did not work as expected"),
+            user=None,
+            meta=StatusMeta(function_name="foo-bar"),
+        )
+        assert json.loads(s.status_data.json(exclude_none=True)) == {
+            "trace_id": "my-trace-id",
+            "domain": "dataset",
+            "domain_id": "my-domain-id",
+            "start_time": utc_now,
+            "end_time": utc_now,
+            "trace_status": "CONTINUE",
+            "trace_event_status": "OK",
+            "component": "system32",
+            "meta": {"function_name": "foo-bar"},
+            "exception": "This did not work as expected",
+        }
