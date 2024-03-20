@@ -16,34 +16,39 @@ from .sdk import Status
 _status_logger = None
 
 
-def status_wrapper(handler):
-    @wraps(handler)
-    def wrapper(event, context):
-        global _status_logger
+def status_wrapper(sdk_config=None):
+    def _status_wrapper(handler):
+        @wraps(handler)
+        def wrapper(event, context):
+            global _status_logger
 
-        _status_logger = Status(_status_from_lambda_context(event, context))
-        _status_logger.add(operation=handler.__name__)
+            _status_logger = Status(
+                _status_from_lambda_context(event, context), sdk_config
+            )
+            _status_logger.add(operation=handler.__name__)
 
-        start_time = time.perf_counter_ns()
-        try:
-            response = handler(event, context)
-            return response
-        except Exception as e:
-            _status_logger.add(exception=e)
-            _status_logger.add(trace_event_status=TraceEventStatus.FAILED)
-            _status_logger.add(trace_status=TraceStatus.FINISHED)
-            raise e
-        finally:
-            end_time = time.perf_counter_ns()
-            duration_ms = (end_time - start_time) / 1000000.0
-            _status_logger.add(duration=duration_ms)
+            start_time = time.perf_counter_ns()
             try:
-                _status_logger.done()
-            except HTTPError as e:
-                logging.exception(f"Error response from status API: {e}")
-            _status_logger = None
+                response = handler(event, context)
+                return response
+            except Exception as e:
+                _status_logger.add(exception=e)
+                _status_logger.add(trace_event_status=TraceEventStatus.FAILED)
+                _status_logger.add(trace_status=TraceStatus.FINISHED)
+                raise e
+            finally:
+                end_time = time.perf_counter_ns()
+                duration_ms = (end_time - start_time) / 1000000.0
+                _status_logger.add(duration=duration_ms)
+                try:
+                    _status_logger.done()
+                except HTTPError as e:
+                    logging.exception(f"Error response from status API: {e}")
+                _status_logger = None
 
-    return wrapper
+        return wrapper
+
+    return _status_wrapper
 
 
 def status_add(**kwargs):

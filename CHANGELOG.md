@@ -1,3 +1,24 @@
+## ?.?.? - Unreleased
+
+* `okdata.aws.status.status_wrapper` now supports an optional argument for
+  configuring the SDK instance used to call the status API.
+
+  Current users must update their usage from:
+
+  ```python
+  @status_wrapper
+  def foo():
+      ...
+  ```
+
+  To:
+
+  ```python
+  @status_wrapper()
+  def foo():
+      ...
+  ```
+
 ## 3.0.1 - 2024-03-21
 
 * Status data exceptions are now accurately converted to strings when exported

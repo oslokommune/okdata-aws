@@ -124,7 +124,7 @@ The handler function should set the `domain` and `domain_id` values using the
 ```python
 from okdata.aws.status import status_wrapper, status_add
 
-@status_wrapper
+@status_wrapper()
 def my_lambda_handler(event, context):
     status_add(domain="dataset", domain_id=f"{dataset_id}/{version}")
 
