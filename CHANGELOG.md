@@ -1,4 +1,4 @@
-## ?.?.? - 2024-03-21
+## 3.0.1 - 2024-03-21
 
 * Status data exceptions are now accurately converted to strings when exported
   as JSON.
