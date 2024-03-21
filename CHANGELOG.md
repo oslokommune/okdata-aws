@@ -1,4 +1,4 @@
-## ?.?.? - Unreleased
+## 4.0.0 - 2024-03-21
 
 * `okdata.aws.status.status_wrapper` now supports an optional argument for
   configuring the SDK instance used to call the status API.
