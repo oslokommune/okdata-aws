@@ -1,3 +1,8 @@
+## ?.?.? - 2024-03-21
+
+* Status data exceptions are now accurately converted to strings when exported
+  as JSON.
+
 ## 3.0.0 - 2024-03-18
 
 * Refactored status data helpers to adopt standard dataclasses in place of

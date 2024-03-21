@@ -5,7 +5,12 @@ from functools import wraps
 
 from requests.exceptions import HTTPError
 
-from .model import StatusData, TraceStatus, TraceEventStatus
+from .model import (
+    StatusData,
+    StatusMeta,
+    TraceEventStatus,
+    TraceStatus,
+)
 from .sdk import Status
 
 _status_logger = None
@@ -57,13 +62,13 @@ def _status_from_lambda_context(event, context):
             "trace_id": event.get("execution_name"),
             "user": authorizer.get("principalId"),
             "component": os.getenv("SERVICE_NAME"),
-            "meta": {
-                "function_name": getattr(context, "function_name", None),
-                "function_version": getattr(context, "function_version", None),
-                "function_stage": request_context.get("stage"),
-                "function_api_id": request_context.get("apiId"),
-                "git_rev": os.getenv("GIT_REV"),
-                "git_branch": os.getenv("GIT_BRANCH"),
-            },
+            "meta": StatusMeta(
+                function_name=getattr(context, "function_name", None),
+                function_version=getattr(context, "function_version", None),
+                function_stage=request_context.get("stage"),
+                function_api_id=request_context.get("apiId"),
+                git_rev=os.getenv("GIT_REV"),
+                git_branch=os.getenv("GIT_BRANCH"),
+            ),
         }
     )
