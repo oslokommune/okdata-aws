@@ -1,3 +1,8 @@
+## ?.?.?
+
+* Deprecated FastAPI `on_event` hooks have been replaced with a 'lifespan'
+  context manager for logging configuration.
+
 ## 4.0.0 - 2024-03-21
 
 * `okdata.aws.status.status_wrapper` now supports an optional argument for
