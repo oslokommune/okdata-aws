@@ -1,7 +1,7 @@
 ## ?.?.? - Unreleased
 
-* Deprecated FastAPI `on_event` hooks have been replaced with a 'lifespan'
-  context manager for logging configuration.
+* Deprecated FastAPI `on_event` hooks have been replaced with a "lifespan"
+  context manager for logging configuration. This requires `fastapi>=0.93`.
 * Updated okdata-sdk version requirement to remove the vulnerable ecdsa
   dependency.
 

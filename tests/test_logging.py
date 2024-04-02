@@ -2,7 +2,16 @@ import json
 import os
 from time import sleep
 
-from okdata.aws.logging import hide_suffix, log_duration, log_dynamodb, logging_wrapper
+from fastapi import FastAPI
+from fastapi.testclient import TestClient
+
+from okdata.aws.logging import (
+    add_fastapi_logging,
+    hide_suffix,
+    log_duration,
+    log_dynamodb,
+    logging_wrapper,
+)
 
 empty_event = {}
 empty_context = None
@@ -316,3 +325,20 @@ def test_log_dynamodb_item_count(capsys):
     log = json.loads(capsys.readouterr().out)
 
     assert log["dynamodb_item_count"] == 123
+
+
+def test_fastapi_logging(capsys):
+    app = FastAPI()
+    add_fastapi_logging(app)
+
+    @app.get("/hello")
+    async def hello():
+        return {"msg": "Hello World"}
+
+    with TestClient(app) as client:
+        response = client.get("/hello")
+        assert response.status_code == 200
+
+    log = json.loads(capsys.readouterr().out)
+    assert log["response_status_code"] == 200
+    assert "duration_ms" in log
