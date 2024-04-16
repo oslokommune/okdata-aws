@@ -16,10 +16,14 @@ botocore==1.34.41
     #   s3transfer
 certifi==2023.7.22
     # via requests
+cffi==1.16.0
+    # via cryptography
 charset-normalizer==2.0.7
     # via requests
-ecdsa==0.17.0
-    # via python-jose
+cryptography==42.0.5
+    # via jwcrypto
+deprecation==2.1.0
+    # via python-keycloak
 idna==3.7
     # via
     #   anyio
@@ -30,43 +34,40 @@ jmespath==1.0.1
     #   botocore
 jsonschema==4.1.2
     # via okdata-sdk
-okdata-sdk==3.1.0
+jwcrypto==1.5.6
+    # via python-keycloak
+okdata-sdk==3.1.1
     # via okdata-aws (setup.py)
-pyasn1==0.4.8
-    # via
-    #   python-jose
-    #   rsa
-pyjwt==2.4.0
-    # via okdata-sdk
+packaging==24.0
+    # via deprecation
+pycparser==2.22
+    # via cffi
 pyrsistent==0.18.0
     # via jsonschema
 python-dateutil==2.8.2
     # via botocore
-python-jose==3.3.0
-    # via
-    #   okdata-sdk
-    #   python-keycloak
-python-keycloak==0.26.1
+python-keycloak==3.12.0
     # via okdata-sdk
 requests==2.31.0
     # via
     #   okdata-aws (setup.py)
     #   okdata-sdk
     #   python-keycloak
-rsa==4.7.2
-    # via python-jose
+    #   requests-toolbelt
+requests-toolbelt==1.0.0
+    # via python-keycloak
 s3transfer==0.10.0
     # via boto3
 six==1.16.0
-    # via
-    #   ecdsa
-    #   python-dateutil
+    # via python-dateutil
 sniffio==1.2.0
     # via anyio
 starlette==0.36.2
     # via okdata-aws (setup.py)
 structlog==21.2.0
     # via okdata-aws (setup.py)
+typing-extensions==4.11.0
+    # via jwcrypto
 urllib3==1.26.18
     # via
     #   botocore

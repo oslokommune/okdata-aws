@@ -1,3 +1,8 @@
+## ?.?.? - Unreleased
+
+* Updated okdata-sdk version requirement to remove the vulnerable ecdsa
+  dependency.
+
 ## 4.0.0 - 2024-03-21
 
 * `okdata.aws.status.status_wrapper` now supports an optional argument for
