@@ -1,4 +1,4 @@
-## ?.?.? - Unreleased
+## 4.1.0 - Unreleased
 
 * Deprecated FastAPI `on_event` hooks have been replaced with a "lifespan"
   context manager for logging configuration. This requires `fastapi>=0.93`.
