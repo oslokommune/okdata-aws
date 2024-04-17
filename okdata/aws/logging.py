@@ -1,5 +1,6 @@
 import os
 import time
+from contextlib import asynccontextmanager
 from copy import copy
 from functools import wraps
 
@@ -38,13 +39,33 @@ def _logging_middleware(request, call_next):
     )
 
 
-def add_fastapi_logging(app):
-    app.add_middleware(BaseHTTPMiddleware, dispatch=_logging_middleware)
+def _fastapi_lifespan_context(app):
+    # https://fastapi.tiangolo.com/advanced/events/#lifespan
 
-    @app.on_event("startup")
-    async def startup_event():
-        global SERVICE_NAME
-        SERVICE_NAME = os.getenv("SERVICE_NAME")
+    global SERVICE_NAME
+    SERVICE_NAME = os.getenv("SERVICE_NAME")
+
+    default_lifespan = app.router.lifespan_context
+
+    @asynccontextmanager
+    async def _lifespan(app):
+        # Wrap the existing lifespan generator in order to not override
+        # any additional lifespan events configured for the app using
+        # `FastAPI(lifespan=...)`.
+        async with default_lifespan(app) as state:
+            yield state
+
+        # Take advantage of the fact that shutdown is called after each
+        # Lambda function invocation to finalize the logging after any
+        # exceptions are logged.
+        _finalize(_start_time)
+
+    return _lifespan
+
+
+def add_fastapi_logging(app):
+    app.router.lifespan_context = _fastapi_lifespan_context(app)
+    app.add_middleware(BaseHTTPMiddleware, dispatch=_logging_middleware)
 
     @app.exception_handler(Exception)
     async def exception_handler(request, e):
@@ -53,15 +74,6 @@ def add_fastapi_logging(app):
         return JSONResponse(
             status_code=500, content={"detail": "Oops! Something went wrong!"}
         )
-
-    @app.on_event("shutdown")
-    async def shutdown_event():
-        """
-        Take advantage of the fact that shutdown is called after each
-        Lambda function invocation to finalize the logging after any
-        exceptions are logged.
-        """
-        _finalize(_start_time)
 
 
 def _init_logger(handler, event, context):
