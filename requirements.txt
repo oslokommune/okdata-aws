@@ -62,7 +62,7 @@ six==1.16.0
     # via python-dateutil
 sniffio==1.2.0
     # via anyio
-starlette==0.37.2
+starlette==0.40.0
     # via okdata-aws (setup.py)
 structlog==21.2.0
     # via okdata-aws (setup.py)
