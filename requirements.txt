@@ -48,7 +48,7 @@ python-dateutil==2.8.2
     # via botocore
 python-keycloak==3.12.0
     # via okdata-sdk
-requests==2.32.0
+requests==2.32.4
     # via
     #   okdata-aws (setup.py)
     #   okdata-sdk
