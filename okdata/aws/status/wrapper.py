@@ -52,8 +52,6 @@ def status_wrapper(sdk_config=None):
 
 
 def status_add(**kwargs):
-    global _status_logger
-
     if _status_logger:
         _status_logger.add(**kwargs)
 

@@ -78,7 +78,6 @@ def add_fastapi_logging(app):
 
 def _init_logger(handler, event, context):
     global COLD_START
-    global SERVICE_NAME
     global _logger
 
     headers = event.get("headers", {}) or {}
