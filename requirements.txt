@@ -68,7 +68,7 @@ structlog==21.2.0
     # via okdata-aws (setup.py)
 typing-extensions==4.11.0
     # via jwcrypto
-urllib3==1.26.19
+urllib3==2.5.0
     # via
     #   botocore
     #   okdata-sdk
