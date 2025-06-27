@@ -1,3 +1,11 @@
+## ?.?.? - Unreleased
+
+* Added support for Python 3.13.
+* Dropped support for Python 3.8 which has reached end of life and Python 3.9
+  which is very soon reaching end of life.
+* Increased the okdata-sdk minimum version requirement to be able to upgrade
+  away from the vulnerable urllib3 v1.x dependency.
+
 ## 4.1.0 - 2024-04-17
 
 * Deprecated FastAPI `on_event` hooks have been replaced with a "lifespan"
