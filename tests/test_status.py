@@ -16,7 +16,6 @@ from okdata.aws.status.model import (
 from okdata.aws.status.sdk import Status
 from okdata.aws.status.wrapper import _status_from_lambda_context
 
-
 utc_now = "2020-10-10T08:55:01+00:00"
 trace_id = "my-trace-id"
 mock_token_response = {
