@@ -30,7 +30,7 @@ setuptools.setup(
         "boto3",
         "okdata-sdk>=3.3,<4",
         "requests",
-        "starlette>=0.36.3,<1.0.0",
+        "starlette>=0.36.3,<2.0.0",
         "structlog",
     ],
 )
