@@ -1,3 +1,7 @@
+## ?.?.? - Unreleased
+
+* Added support for Python 3.14 and dropped support for Python 3.10.
+
 ## 5.0.0 - 2025-06-27
 
 * Added support for Python 3.13.
