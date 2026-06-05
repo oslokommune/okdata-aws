@@ -48,7 +48,7 @@ build: $(BUILD_VENV)/bin/setuptools $(BUILD_VENV)/bin/twine $(BUILD_VENV)/bin/wh
 publish:
 	username=$$(op read op://Dataspeilet/pypi-upload-token/username) &&\
 	password=$$(op read op://Dataspeilet/pypi-upload-token/credential) &&\
-	python -m twine upload -u $$username -p $$password dist/*
+	$(BUILD_PY) -m twine upload -u $$username -p $$password dist/*
 
 ###
 # Python build dependencies
