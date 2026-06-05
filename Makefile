@@ -41,7 +41,7 @@ upgrade-deps: $(BUILD_VENV)/bin/pip-compile
 	$(BUILD_VENV)/bin/pip-compile -U
 
 .PHONY: build
-build: $(BUILD_VENV)/bin/wheel $(BUILD_VENV)/bin/twine
+build: $(BUILD_VENV)/bin/setuptools $(BUILD_VENV)/bin/twine $(BUILD_VENV)/bin/wheel format test
 	$(BUILD_PY) setup.py sdist bdist_wheel
 
 .PHONY: publish

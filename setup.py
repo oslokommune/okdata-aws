@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="okdata-aws",
-    version="5.0.0",
-    author="Oslo Origo",
+    version="6.0.0",
+    author="Oslo kommune",
     author_email="dataplattform@oslo.kommune.no",
     description="Collection of helpers for working with AWS",
     long_description=long_description,
