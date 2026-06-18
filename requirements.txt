@@ -70,7 +70,7 @@ s3transfer==0.18.0
     # via boto3
 six==1.17.0
     # via python-dateutil
-starlette==1.2.1
+starlette==1.3.1
     # via okdata-aws (setup.py)
 structlog==25.5.0
     # via okdata-aws (setup.py)
