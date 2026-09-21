@@ -4,7 +4,7 @@
 #
 #    pip-compile
 #
-anyio==4.13.0
+anyio==4.14.2
     # via starlette
 attrs==26.1.0
     # via
