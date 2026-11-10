@@ -1,6 +1,9 @@
 ## ?.?.? - Unreleased
 
 * Added support for Python 3.15.
+* Removed `okdata.aws.status` (the status wrapper and its models) since the
+  status API has been discontinued. The `okdata-sdk` and `requests` dependencies
+  have been dropped along with it.
 
 ## 6.0.0 - 2026-06-05
 
