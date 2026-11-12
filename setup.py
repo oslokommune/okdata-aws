@@ -5,17 +5,14 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="okdata-aws",
-    version="6.0.0",
+    version="7.0.0",
     author="Oslo kommune",
-    author_email="dataplattform@oslo.kommune.no",
+    author_email="dataspeilet@oslo.kommune.no",
     description="Collection of helpers for working with AWS",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/oslokommune/okdata-aws",
-    packages=setuptools.find_namespace_packages(
-        include="origo.aws.*", exclude=["tests*"]
-    ),
-    namespace_packages=["okdata"],
+    packages=setuptools.find_namespace_packages(include=["okdata.*"]),
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "License :: OSI Approved :: MIT License",
